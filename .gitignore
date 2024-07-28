@@ -26,3 +26,5 @@ erl_crash.dump
 talkoyaki-*.tar
 
 /config/dev.exs
+
+/mnesia
