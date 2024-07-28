@@ -1,0 +1,24 @@
+# fly.toml app configuration file generated for talkoyaki on 2024-07-26T21:22:58-04:00
+#
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+#
+
+app = 'talkoyaki'
+primary_region = 'iad'
+kill_signal = 'SIGTERM'
+
+[build]
+
+[deploy]
+  release_command = '/app/bin/release'
+
+[env]
+
+[mounts]
+  source = 'talkoyaki_mnesia'
+  destination = '/mnesia'
+
+[[vm]]
+  memory = '512m'
+  cpu_kind = 'shared'
+  cpus = 1
