@@ -177,7 +177,7 @@ defmodule Talkoyaki.Model.Suggestion do
       channel,
       %{
         name: title,
-        applied_tags: all_tags[type],
+        applied_tags: [all_tags[type]],
         message: %{
           content: description,
           components: [
@@ -269,16 +269,16 @@ defmodule Talkoyaki.Model.Suggestion do
   end
 
   defp build_description(author_id, %{
-    suggestion: description,
-    reason: reason
-  }) do
-  """
-  ### Suggestion description:
-  #{description}
-  ### Reasoning:
-  #{reason}
-  ### Submitted by:
-  <@#{author_id}>
-  """
+         suggestion: description,
+         reason: reason
+       }) do
+    """
+    ### Suggestion description:
+    #{description}
+    ### Reasoning:
+    #{reason}
+    ### Submitted by:
+    <@#{author_id}>
+    """
   end
 end
