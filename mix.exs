@@ -32,7 +32,7 @@ defmodule Talkoyaki.MixProject do
       {:credo, "~> 1.7", only: [:dev, :test], runtime: false},
       # Discord
       {:nostrum, github: "Kraigie/nostrum", branch: "master", override: true, runtime: false},
-      #{:nosedrum,
+      # {:nosedrum,
       # github: "jchristgit/nosedrum", branch: "master", override: true},
       # Efficient gateway compression
       {:ezstd, "~> 1.1"},

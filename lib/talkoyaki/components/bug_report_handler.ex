@@ -5,42 +5,30 @@ defmodule Talkoyaki.Components.BugReportHandler do
 
   alias Nostrum.Struct.Embed
 
-  @bug_report_submitted %{
-    embeds: [
-      %Embed{
-        title: "Bug report submitted!",
-        description:
-          "Thank you for submitting a bug report. We'll look into it as soon as possible!\n\nYou'll receive a DM from <@1266802792383910052> shortly once your report is reviewed.",
-        color: brand_color()
-      }
-    ],
-    flags: ephemeral_flag()
-  }
-
   @global_components [
     text_input(
-            id: "description",
-            label: "What is a short description of the bug?",
-            min_length: 1,
-            max_length: 100,
-            placeholder: "Pressing the \"XYZ\" button causes..."
-          ),
-          text_input(
-            id: "expected_behavior",
-            type: :long,
-            label: "What did you expect to happen?",
-            min_length: 1,
-            max_length: 800,
-            placeholder: "I expected..."
-          ),
-          text_input(
-            id: "actual_behavior",
-            type: :long,
-            label: "What actually happened?",
-            min_length: 1,
-            max_length: 800,
-            placeholder: "Instead..."
-          )
+      id: "description",
+      label: "What is a short description of the bug?",
+      min_length: 1,
+      max_length: 100,
+      placeholder: "Doing \"XYZ\" causes..."
+    ),
+    text_input(
+      id: "expected_behavior",
+      type: :long,
+      label: "What did you expect to happen?",
+      min_length: 1,
+      max_length: 800,
+      placeholder: "I expected..."
+    ),
+    text_input(
+      id: "actual_behavior",
+      type: :long,
+      label: "What actually happened?",
+      min_length: 1,
+      max_length: 800,
+      placeholder: "Instead..."
+    )
   ]
 
   def handle_interaction(interaction, options \\ [])
@@ -104,7 +92,17 @@ defmodule Talkoyaki.Components.BugReportHandler do
 
     Nostrum.Api.create_interaction_response(interaction, %{
       type: 4,
-      data: @bug_report_submitted
+      data: %{
+        embeds: [
+          %Embed{
+            title: "Bug report submitted!",
+            description:
+              "Thank you for submitting a bug report. We'll look into it as soon as possible!\n\nYou'll receive a DM from <@1266802792383910052> shortly once your report is reviewed.",
+            color: brand_color()
+          }
+        ],
+        flags: ephemeral_flag()
+      }
     })
   end
 

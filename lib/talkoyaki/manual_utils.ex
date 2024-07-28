@@ -27,76 +27,84 @@ defmodule Talkoyaki.ManualUtils do
   end
 
   def create_bug_report_embed do
-    channel_id = Application.get_env(:talkoyaki, :bug_reports_channel)
     import Nostrum.Struct.Component.ActionRow, only: [action_row: 1]
     import Nostrum.Struct.Component.Button, only: [interaction_button: 3]
+
+    channel_id = Application.get_env(:talkoyaki, :bug_reports_channel)
 
     Nostrum.Api.start_thread_in_forum_channel(
       channel_id,
       %{
         name: "Report a bug here!",
         message: %{
-            embeds: [
-              %Embed{
-                title: "Report a bug!",
-                description: """
-                Use a button below to report a bug. Please provide as much detail as possible!
-      
-                **NOTE:** Before doing this, please check <#1266806422042050620> to see if the bug has already been reported. If you are experiencing a very similar issue and have additional information, please reply to the existing report.
-                """,
-                color: Talkoyaki.Utils.brand_color()
-              }
-            ],
-            components: [
-              action_row([
-                interaction_button(
-                  "Report a bot bug",
-                  "bug-report|button|bot",
-                  style: 2,
-                  emoji: %Nostrum.Struct.Emoji{name: "🤖"}
-                ),
-                interaction_button(
-                  "Report an app bug",
-                  "bug-report|button|app",
-                  style: 2,
-                  emoji: %Nostrum.Struct.Emoji{name: "📱"}
-                )
-              ])
-            ]
+          embeds: [
+            %Embed{
+              title: "Report a bug!",
+              description: """
+              Use a button below to report a bug. Please provide as much detail as possible!
+
+              **NOTE:** Before doing this, please check <#1266806422042050620> to see if the bug has already been reported. If you are experiencing a very similar issue and have additional information, please reply to the existing report.
+              """,
+              color: Talkoyaki.Utils.brand_color()
+            }
+          ],
+          components: [
+            action_row([
+              interaction_button(
+                "Report a bot bug",
+                "bug-report|button|bot",
+                style: 2,
+                emoji: %Nostrum.Struct.Emoji{name: "🤖"}
+              ),
+              interaction_button(
+                "Report an app bug",
+                "bug-report|button|app",
+                style: 2,
+                emoji: %Nostrum.Struct.Emoji{name: "📱"}
+              )
+            ])
+          ]
         }
       }
     )
   end
 
-  # [
-  #   embeds: [
-  #     %Nostrum.Struct.Embed{
-  #       title: "Make a suggestion!",
-  #       description: """
-  #       Use a button below to make a suggestion. Please provide as much detail as possible!
+  def create_suggestion_embed do
+    import Nostrum.Struct.Component.ActionRow, only: [action_row: 1]
+    import Nostrum.Struct.Component.Button, only: [interaction_button: 3]
+    
+    channel_id = Application.get_env(:talkoyaki, :suggestions_channel)
 
-  #       **NOTE:** Before doing this, please check <#1266807452096008233> **and** <#1266809006609928242> to see if the suggestion has already been made.
-  #       """,
-  #       color: Talkoyaki.Utils.brand_color()
-  #     }
-  #   ],
-  #   components: [
-  #     action_row([
-  #       interaction_button(
-  #         "Make a bot suggestion",
-  #         "suggestion|button|bot",
-  #         style: 2,
-  #         emoji: %Nostrum.Struct.Emoji{name: "🤖"}
-  #       ),
-  #       interaction_button(
-  #         "Make an app suggestion",
-  #         "suggestion|button|app",
-  #         style: 2,
-  #         emoji: %Nostrum.Struct.Emoji{name: "📱"}
-  #       )
-  #     ])
-  #   ]
-  # ]
+    Nostrum.Api.create_message(channel_id,
+      embeds: [
+        %Embed{
+          title: "Make a suggestion!",
+          description: """
+          Use a button below to make a suggestion. Please provide as much detail as possible!
+
+          **NOTE:** Before doing this, please check <#1266807452096008233> to see if the suggestion has already been made.
+          """,
+          color: Talkoyaki.Utils.brand_color()
+        }
+      ],
+      components: [
+        action_row([
+          interaction_button(
+            "Make a bot suggestion",
+            "suggestion|button|bot",
+            style: 2,
+            emoji: %Nostrum.Struct.Emoji{name: "🤖"}
+          ),
+          interaction_button(
+            "Make an app suggestion",
+            "suggestion|button|app",
+            style: 2,
+            emoji: %Nostrum.Struct.Emoji{name: "📱"}
+          )
+        ])
+      ]
+    )
+  end
 
   defp load_app do
     Application.load(@app)

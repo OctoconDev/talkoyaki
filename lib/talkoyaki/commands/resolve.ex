@@ -20,6 +20,7 @@ defmodule Talkoyaki.Commands.Resolve do
 
         report ->
           reason = Utils.get_command_option(options, "reason")
+
           case BugReport.resolve_bug_report(report.id, reason) do
             {:error, reason} ->
               Utils.error_embed(reason)

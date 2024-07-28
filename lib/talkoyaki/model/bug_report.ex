@@ -36,7 +36,8 @@ defmodule Talkoyaki.Model.BugReport do
   def get_bug_report_by_thread(thread_id) do
     transaction do
       Memento.Query.select(__MODULE__, {:==, :thread_id, thread_id})
-    end |> List.first()
+    end
+    |> List.first()
   end
 
   def bump_bug_report(report_id, user_id) do
@@ -72,6 +73,7 @@ defmodule Talkoyaki.Model.BugReport do
     cond do
       report == nil ->
         {:error, "No bug report found."}
+
       report.is_resolved? ->
         {:error, "This bug report is already resolved."}
 
@@ -102,7 +104,7 @@ defmodule Talkoyaki.Model.BugReport do
                   title: ":white_check_mark: Resolved",
                   color: 0x00FF00,
                   description:
-                    "This bug report has been marked as resolved. Details:\n\n*#{details}*",
+                    "This bug report has been marked as resolved. Details:\n\n*#{details}*"
                 }
               ]
             )
@@ -196,6 +198,7 @@ defmodule Talkoyaki.Model.BugReport do
 
   def delete_bug_report(id) do
     report = get_bug_report(id)
+
     transaction do
       Memento.Query.delete(__MODULE__, id)
     end
@@ -284,51 +287,57 @@ defmodule Talkoyaki.Model.BugReport do
   defp log_report(report, responses) do
     log_channel = Application.get_env(:talkoyaki, :log_channel)
 
-    res = Nostrum.Api.create_message(log_channel,
-      embeds: [
-        %Embed{
-          title: ":warning: New bug report (#{
-            report.type |> to_string() |> String.capitalize()
-          })",
-          color: Talkoyaki.Utils.brand_color(),
-          description: "# #{report.title}\n#{report.description}",
-          fields: [
-            %Nostrum.Struct.Embed.Field{
-              name: "Type",
-              value: to_string(report.type) |> String.capitalize()
-            }
-          ] ++ case report.type do
-            :app ->
-              [%Nostrum.Struct.Embed.Field{
-                name: "App version",
-                value: responses[:app_version]
-              }]
+    res =
+      Nostrum.Api.create_message(log_channel,
+        embeds: [
+          %Embed{
+            title:
+              ":warning: New bug report (#{report.type |> to_string() |> String.capitalize()})",
+            color: Talkoyaki.Utils.brand_color(),
+            description: "# #{report.title}\n#{report.description}",
+            fields:
+              [
+                %Nostrum.Struct.Embed.Field{
+                  name: "Type",
+                  value: to_string(report.type) |> String.capitalize()
+                }
+              ] ++
+                case report.type do
+                  :app ->
+                    [
+                      %Nostrum.Struct.Embed.Field{
+                        name: "App version",
+                        value: responses[:app_version]
+                      }
+                    ]
 
-            :bot ->
-              [%Nostrum.Struct.Embed.Field{
-                name: "Discord up-to-date?",
-                value: responses[:discord_up_to_date]
-              }]
-          end
-        }
-      ],
-      components: [
-        action_row([
-          interaction_button(
-            "Accept",
-            "bug-report|accept|#{report.id}",
-            style: 3,
-            emoji: %Nostrum.Struct.Emoji{name: "✅"}
-          ),
-          interaction_button(
-            "Reject",
-            "bug-report|reject|btn|#{report.id}",
-            style: 4,
-            emoji: %Nostrum.Struct.Emoji{name: "🗑️"}
-          )
-        ])
-      ]
-    )
+                  :bot ->
+                    [
+                      %Nostrum.Struct.Embed.Field{
+                        name: "Discord up-to-date?",
+                        value: responses[:discord_up_to_date]
+                      }
+                    ]
+                end
+          }
+        ],
+        components: [
+          action_row([
+            interaction_button(
+              "Accept",
+              "bug-report|accept|#{report.id}",
+              style: 3,
+              emoji: %Nostrum.Struct.Emoji{name: "✅"}
+            ),
+            interaction_button(
+              "Reject",
+              "bug-report|reject|btn|#{report.id}",
+              style: 4,
+              emoji: %Nostrum.Struct.Emoji{name: "🗑️"}
+            )
+          ])
+        ]
+      )
 
     res
   end
