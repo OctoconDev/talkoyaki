@@ -22,3 +22,5 @@ config :nostrum,
   gateway_intents: [
     :message_content
   ]
+
+config :tentacat, :deserialization_options, [keys: :atoms]

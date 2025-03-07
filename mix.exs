@@ -31,13 +31,12 @@ defmodule Talkoyaki.MixProject do
       # CI
       {:credo, "~> 1.7", only: [:dev, :test], runtime: false},
       # Discord
-      {:nostrum, github: "Kraigie/nostrum", branch: "master", override: true, runtime: false},
-      # {:nosedrum,
-      # github: "jchristgit/nosedrum", branch: "master", override: true},
+      {:nostrum, "~> 0.10"},
       # Efficient gateway compression
       {:ezstd, "~> 1.1"},
-      # Mnesia
-      {:memento, "~> 0.3.2"}
+      # GitHub
+      {:tentacat, "~> 2.5"},
+      {:jose, "~> 1.11"}
     ]
   end
 

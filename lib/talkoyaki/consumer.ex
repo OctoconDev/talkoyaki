@@ -8,30 +8,7 @@ defmodule Talkoyaki.Consumer do
     Commands
   }
 
-  @commands %{
-    "resolve" => Commands.Resolve,
-    "delete" => Commands.Delete
-  }
-
   def handle_event({:READY, _data, _ws_state}) do
-    Talkoyaki.Tags.register_bug_report_tags()
-    Talkoyaki.Tags.register_suggestion_tags()
-
-    spawn(fn ->
-      Logger.info("Bulk-registering all slash commands (#{map_size(@commands)})...")
-
-      guild_id = Application.get_env(:talkoyaki, :guild_id)
-
-      Enum.each(@commands, fn {name, module} ->
-        Nosedrum.Storage.Dispatcher.queue_command(name, module)
-      end)
-
-      case Nosedrum.Storage.Dispatcher.process_queue(guild_id) do
-        {:ok, _} -> Logger.info("Registered all commands!")
-        {:error, e} -> Logger.error("Failed to register all commands: #{e}")
-      end
-    end)
-
     :ok
   end
 
