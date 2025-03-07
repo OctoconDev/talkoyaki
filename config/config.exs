@@ -23,4 +23,4 @@ config :nostrum,
     :message_content
   ]
 
-config :tentacat, :deserialization_options, [keys: :atoms]
+config :tentacat, :deserialization_options, keys: :atoms

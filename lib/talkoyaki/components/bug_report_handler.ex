@@ -1,7 +1,8 @@
 defmodule Talkoyaki.Components.BugReportHandler do
   @moduledoc false
 
-  import Talkoyaki.Utils, only: [brand_color: 0, text_input: 1, ephemeral_flag: 0, send_dm_success: 3]
+  import Talkoyaki.Utils,
+    only: [brand_color: 0, text_input: 1, ephemeral_flag: 0, send_dm_success: 3]
 
   alias Talkoyaki.GitHub
   alias Nostrum.Struct.Embed
@@ -111,17 +112,24 @@ defmodule Talkoyaki.Components.BugReportHandler do
       }) do
     responses = parse_responses(components)
 
-    user = case Nostrum.Api.User.get(author_id) do
-      {:ok, user} -> user
-      _ -> nil
-    end
+    user =
+      case Nostrum.Api.User.get(author_id) do
+        {:ok, user} -> user
+        _ -> nil
+      end
 
-    url = GitHub.create_bug_report_issue(
-      type,
-      responses,
-      user
+    url =
+      GitHub.create_bug_report_issue(
+        type,
+        responses,
+        user
+      )
+
+    send_dm_success(
+      author_id,
+      "Bug report submitted!",
+      "Thank you for submitting a bug report! You can track the status of your report [here](#{url})."
     )
-    send_dm_success(author_id, "Bug report submitted!", "Thank you for submitting a bug report! You can track the status of your report [here](#{url}).")
 
     :ok
   end

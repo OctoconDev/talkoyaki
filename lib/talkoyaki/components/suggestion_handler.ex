@@ -1,6 +1,7 @@
 defmodule Talkoyaki.Components.SuggestionHandler do
   @moduledoc false
-  import Talkoyaki.Utils, only: [brand_color: 0, text_input: 1, ephemeral_flag: 0, send_dm_success: 3]
+  import Talkoyaki.Utils,
+    only: [brand_color: 0, text_input: 1, ephemeral_flag: 0, send_dm_success: 3]
 
   alias Talkoyaki.GitHub
   alias Nostrum.Struct.Embed
@@ -65,17 +66,24 @@ defmodule Talkoyaki.Components.SuggestionHandler do
       }) do
     responses = parse_responses(components)
 
-    user = case Nostrum.Api.User.get(author_id) do
-      {:ok, user} -> user
-      _ -> nil
-    end
+    user =
+      case Nostrum.Api.User.get(author_id) do
+        {:ok, user} -> user
+        _ -> nil
+      end
 
-    url = GitHub.create_suggestion_issue(
-      type,
-      responses,
-      user
+    url =
+      GitHub.create_suggestion_issue(
+        type,
+        responses,
+        user
+      )
+
+    send_dm_success(
+      author_id,
+      "Suggestion submitted!",
+      "Thank you for submitting a suggestion! You can track the status of your suggestion [here](#{url})."
     )
-    send_dm_success(author_id, "Suggestion submitted!", "Thank you for submitting a suggestion! You can track the status of your suggestion [here](#{url}).")
 
     :ok
   end
