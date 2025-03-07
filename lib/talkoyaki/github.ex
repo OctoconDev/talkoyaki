@@ -115,7 +115,7 @@ defmodule Talkoyaki.GitHub do
 
     issue_body = """
     #{if user == nil, do: "", else: """
-      **Reported by:** @#{user.username} (#{user.id})
+      **Reported by:** `@#{user.username}` (<@#{user.id}>)
 
       """}
     **Discord up-to-date:** #{discord_up_to_date}
@@ -146,7 +146,7 @@ defmodule Talkoyaki.GitHub do
 
     issue_body = """
     #{if user == nil, do: "", else: """
-      **Reported by:** @#{user.username} (#{user.id})
+      **Reported by:** `@#{user.username}` (<@#{user.id}>)
 
       """}
     **App version:** #{app_version}
@@ -186,7 +186,7 @@ defmodule Talkoyaki.GitHub do
 
     issue_body = """
     #{if user == nil, do: "", else: """
-      **Suggested by:** @#{user.username} (#{user.id})
+      **Suggested by:** `@#{user.username}` (<@#{user.id}>)
 
       """}
     **Suggestion:**
