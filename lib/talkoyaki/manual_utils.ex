@@ -39,7 +39,7 @@ defmodule Talkoyaki.ManualUtils do
           description: """
           Use a button below to report a bug. Please provide as much detail as possible!
 
-          **NOTE:** Before doing this, please check TODO to see if the bug has already been reported. If you are experiencing a very similar issue and have additional information, please comment on the existing report or let us know in #TODO.
+          **NOTE:** Before doing this, please [check our GitHub](https://github.com/OctoconDev/issues/issues?q=is%3Aissue%20state%3Aopen%20type%3ABug) to see if the bug has already been reported. If you are experiencing a very similar issue and have additional information, please comment on the existing report or let us know in <#1347414718150873189>.
           """,
           color: Talkoyaki.Utils.brand_color()
         }
@@ -76,7 +76,7 @@ defmodule Talkoyaki.ManualUtils do
           description: """
           Use a button below to make a suggestion. Please provide as much detail as possible!
 
-          **NOTE:** Before doing this, please check TODO to see if the suggestion has already been made.
+          **NOTE:** Before doing this, please [check our GitHub](https://github.com/OctoconDev/issues/issues?q=is%3Aissue%20state%3Aopen%20type%3ASuggestion) to see if the suggestion has already been made. If you would like to expand on an existing suggestion, please comment on the issue or let us know in <#1347414749293445141>.
           """,
           color: Talkoyaki.Utils.brand_color()
         }

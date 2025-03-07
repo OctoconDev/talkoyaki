@@ -18,7 +18,7 @@ defmodule Talkoyaki.GitHub do
   defp generate_jwt do
     current_time = get_jwk_time()
     time_seconds = div(current_time, 1000)
- 
+
     jwt = JOSE.JWT.sign(
       get_jwk(),
       %{ "alg" => "RS256" },
@@ -72,14 +72,14 @@ defmodule Talkoyaki.GitHub do
   def build_app_client do
     Tentacat.Client.new(%{jwt: get_current_jwt()})
   end
-  
+
   def build_client do
     Tentacat.Client.new(%{access_token: get_current_installation_token()})
   end
 
   @type_labels %{
     bot: {"Discord", "Bot"},
-    app: {"Frontend (all platforms)", "App"}
+    app: {"App (all platforms)", "App"}
   }
 
   def create_bug_report_issue(
@@ -107,7 +107,7 @@ defmodule Talkoyaki.GitHub do
     #{
       if user == nil, do: "", else: """
       **Reported by:** @#{user.username} (#{user.id})
-      
+
       """
     }
     **Discord up-to-date:** #{discord_up_to_date}
@@ -116,6 +116,77 @@ defmodule Talkoyaki.GitHub do
     #{expected_behavior}
     **Actual behavior:**
     #{actual_behavior}
+    """
+
+    create_issue(issue_title, issue_body, type_label)
+  end
+
+  def create_bug_report_issue(
+    :app,
+    %{
+      app_version: app_version,
+      description: description,
+      affected_platform: platform,
+      expected_behavior: expected_behavior,
+      actual_behavior: actual_behavior
+    },
+    user
+  ) do
+    {type_label, type_name} = @type_labels[:app]
+
+    issue_title = "Bug Report (#{type_name}) - #{description}"
+    issue_body = """
+    #{
+      if user == nil, do: "", else: """
+      **Reported by:** @#{user.username} (#{user.id})
+
+      """
+    }
+    **App version:** #{app_version}
+    **Affected platform:** #{platform}
+    **Expected behavior:**
+    #{expected_behavior}
+    **Actual behavior:**
+    #{actual_behavior}
+    """
+
+    create_issue(issue_title, issue_body, type_label)
+  end
+
+  defp extract_discord_platform(original_platform, downcase \\ nil)
+
+  defp extract_discord_platform(original_platform, nil) do
+    extract_discord_platform(original_platform, String.downcase(original_platform))
+  end
+
+  defp extract_discord_platform(_, "pc"), do: "PC"
+  defp extract_discord_platform(_, "android"), do: "Android"
+  defp extract_discord_platform(_, "ios"), do: "iOS"
+  defp extract_discord_platform(other, _), do: String.capitalize(other)
+
+  def create_suggestion_issue(
+    type,
+    %{
+      title: title,
+      suggestion: suggestion,
+      reason: reason
+    },
+    user
+  ) do
+    {type_label, type_name} = @type_labels[type]
+
+    issue_title = "Suggestion (#{type_name}) - #{title}"
+    issue_body = """
+    #{
+      if user == nil, do: "", else: """
+      **Suggested by:** @#{user.username} (#{user.id})
+
+      """
+    }
+    **Suggestion:**
+    #{suggestion}
+    **Why this would be beneficial:**
+    #{reason}
     """
 
     create_issue(issue_title, issue_body, type_label)
@@ -131,23 +202,4 @@ defmodule Talkoyaki.GitHub do
 
     url
   end
-
-  defp extract_discord_platform(original_platform, downcase \\ nil)
-
-  defp extract_discord_platform(original_platform, nil) do
-    extract_discord_platform(original_platform, String.downcase(original_platform))
-  end
-
-  defp extract_discord_platform(_, "pc"), do: "PC"
-  defp extract_discord_platform(_, "android"), do: "Android"
-  defp extract_discord_platform(_, "ios"), do: "iOS"
-  defp extract_discord_platform(other, _), do: String.capitalize(other)
-
-  def create_suggestion_issue(type, responses, user) do
-    IO.inspect(responses)
-
-    "Abc"
-  end
-
-  
 end

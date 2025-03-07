@@ -9,7 +9,6 @@ if config_env() == :prod do
     token: try_get_env.("DISCORD_TOKEN")
 
   config :talkoyaki,
-    log_channel: String.to_integer(try_get_env.("LOG_CHANNEL")),
     bug_reports_channel: String.to_integer(try_get_env.("BUG_REPORTS_CHANNEL")),
     suggestions_channel: String.to_integer(try_get_env.("SUGGESTIONS_CHANNEL")),
     guild_id: String.to_integer(try_get_env.("GUILD_ID")),

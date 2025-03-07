@@ -4,8 +4,7 @@ defmodule Talkoyaki.Consumer do
   require Logger
 
   alias Talkoyaki.{
-    Components,
-    Commands
+    Components
   }
 
   def handle_event({:READY, _data, _ws_state}) do
@@ -20,6 +19,7 @@ defmodule Talkoyaki.Consumer do
     end
   rescue
     e ->
+      # Catch the error to notify the user, then re-raise it for logging
       Nostrum.Api.create_interaction_response(interaction, %{
         type: :integer,
         data: %{

@@ -38,9 +38,9 @@ defmodule Talkoyaki.Utils do
   end
 
   def send_dm(author_id, title, message, color) do
-    channel = Nostrum.Api.create_dm!(author_id)
+    {:ok, channel} = Nostrum.Api.User.create_dm(author_id)
 
-    Nostrum.Api.create_message(channel.id, %{
+    Nostrum.Api.Message.create(channel.id, %{
       embeds: [
         %Nostrum.Struct.Embed{
           title: title,

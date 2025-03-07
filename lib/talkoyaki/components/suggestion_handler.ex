@@ -5,8 +5,6 @@ defmodule Talkoyaki.Components.SuggestionHandler do
   alias Talkoyaki.GitHub
   alias Nostrum.Struct.Embed
 
-  def handle_interaction(interaction, options \\ [])
-
   def handle_interaction(interaction, [:button, type]) do
     Nostrum.Api.create_interaction_response(interaction, %{
       type: 9,

@@ -20,7 +20,7 @@ defmodule Talkoyaki.Components.BugReportHandler do
       label: "What did you expect to happen?",
       min_length: 1,
       max_length: 800,
-      placeholder: "I expected..."
+      placeholder: "I expected... (you can use **Markdown** here)"
     ),
     text_input(
       id: "actual_behavior",
@@ -28,11 +28,9 @@ defmodule Talkoyaki.Components.BugReportHandler do
       label: "What actually happened?",
       min_length: 1,
       max_length: 800,
-      placeholder: "Instead..."
+      placeholder: "Instead... (you can use **Markdown** here)"
     )
   ]
-
-  def handle_interaction(interaction, options \\ [])
 
   def handle_interaction(interaction, [:button, :bot]) do
     Nostrum.Api.create_interaction_response(interaction, %{
@@ -80,7 +78,7 @@ defmodule Talkoyaki.Components.BugReportHandler do
             label: "What platform are you on (including version)?",
             min_length: 1,
             max_length: 15,
-            placeholder: "Android 12; iOS 14.5"
+            placeholder: "Android 14; iOS 18.2; Google Chrome 136"
           )
           | @global_components
         ]
@@ -123,7 +121,7 @@ defmodule Talkoyaki.Components.BugReportHandler do
       responses,
       user
     )
-    send_dm_success(author_id, "Suggestion submitted!", "Thank you for submitting a suggestion! You can track the status of your suggestion [here](#{url}).")
+    send_dm_success(author_id, "Bug report submitted!", "Thank you for submitting a bug report! You can track the status of your report [here](#{url}).")
 
     :ok
   end
